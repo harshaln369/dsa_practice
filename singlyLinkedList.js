@@ -85,6 +85,54 @@ class SinglyLinkedList {
     }
     return false;
   }
+
+  insert(index, val) {
+    const newNode = new Node(val);
+    if (index < 0 || index > this.length) return false;
+
+    if (index === this.length) {
+      return !!this.push(val);
+    }
+    if (index === 0) {
+      return !!this.unshift(val);
+    }
+
+    const prev = this.get(index - 1);
+    const temp = prev.next;
+    prev.next = newNode;
+    newNode.next = temp;
+    this.length++;
+    return true;
+  }
+
+  remove(index) {
+    if (index < 0 || index >= this.length) return undefined;
+
+    if (index === this.length - 1) return this.pop();
+
+    if (index === 0) return this.shift();
+
+    const prev = this.get(index - 1);
+    const removed = prev.next;
+    prev.next = removed.next;
+    this.length--;
+    return removed;
+  }
+
+  reverse() {
+    const node = this.head;
+    this.head = this.tail;
+    this.tail = node;
+    let next;
+    let prev = null;
+    for (let i = 0; i < this.length; i++) {
+      next = node.next;
+      node.next = prev;
+      prev = node;
+      node = next;
+    }
+    return this;
+  }
 }
 
 const list = new SinglyLinkedList();
@@ -94,7 +142,7 @@ list.push("world");
 list.push("!");
 list.push("some more data");
 
-console.log(list.set(2, "test"));
+console.log(list.reverse());
 // console.log(JSON.stringify(list, null, 2));
 // list.unshift("second");
 // console.log(JSON.stringify(list, null, 2));
